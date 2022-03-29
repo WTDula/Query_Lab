@@ -58,8 +58,9 @@ SELECT `school_db_student`.`id`,
 # Order the data by highest GPAs first (descending).
 # Print out each student's full name and gpa to the terminal
 def problem_one(request):
+
     student_return = Student.objects.all()
-    student_gpa_gt_3 = student_return.filter(gpa__gt = 3.0).order_by("-gpa")
+    student_gpa_gt_3 = student_return.filter(gpa__gt = 3.0).order_by("-gpa") # order by decreasing gpa
     for student in student_gpa_gt_3:
         print(f"Full Name: {student.first_name} {student.last_name} GPA: {student.gpa}")
 
@@ -103,6 +104,7 @@ SELECT `school_db_student`.`id`,
 # Print out the instructor's full name and hire date to the terminal
 def problem_two(request):
     instructor_return = Instructor.objects.all().filter(hire_date__lt="2010-01-01")
+
     for instr in instructor_return:
       print(f"Full Name: {instr.first_name} {instr.last_name}\nHire Date: {instr.hire_date}\n")
 
@@ -146,10 +148,11 @@ SELECT `school_db_instructor`.`id`,
 def problem_three(request):
     instr = Instructor.objects.all().get(id = 2)
     crs = Course.objects.all().filter(instructor_id = 2)
+
     print(f"Instructor Name: {instr.first_name} {instr.last_name}")
     print("Courses:")
     for course in crs:
-      print(f"\t- {course.name}")
+      print(f"\t-{course.name}")
 
     return complete(request)
 
@@ -199,9 +202,10 @@ def problem_four(request):
     student_count = Student.objects.count()
     course_count = Course.objects.count()
     instructor_count = Instructor.objects.count()
-    print(f"Students Count: {student_count}")
-    print(f"Courses Count: {course_count}")
-    print(f"Instructors Count: {instructor_count}")
+
+    print(f"Students Count:\t\t{student_count}")
+    print(f"Courses Count:\t\t{course_count}")
+    print(f"Instructors Count:\t{instructor_count}")
 
     return complete(request)
 
@@ -246,7 +250,9 @@ SELECT COUNT(*) AS `__count`
 # Print the new student's id, full name, year, and gpa to the terminal
 # NOTE every time you execute this function a duplicate student will be created with a different primary key number
 def problem_five(request):
+
     new_kid = Student.objects.create(first_name = "Travis", last_name = "Dula", year = 2006, gpa = 2.0)
+
     print(f"ID: {new_kid.id}")
     print(f"Full Name: {new_kid.first_name} {new_kid.last_name}")
     print(f"Year: {new_kid.year}")
@@ -286,8 +292,10 @@ def problem_six(request):
     
     # Make sure to set this equal to the primary key of the row you just created!
     student_id = 16
+
     Student.objects.filter(id = student_id).update(gpa=3.5)
     another_me = Student.objects.get(id = student_id)
+
     print(f"Id: {another_me.id}")
     print(f"Full Name: {another_me.first_name} {another_me.last_name}")
     print(f"GPA: {another_me.gpa}")
@@ -398,17 +406,18 @@ SELECT `school_db_student`.`id`,
 def bonus_problem(request):
     instructors = Instructor.objects.all()
     courses = Course.objects.all()
-    
+
+    # loop through each instructor and test if the instructor's id matches the course id
     for instructor in instructors:
       count = 0
       for course in courses:
-        if(instructor.id == course.instructor_id):
-          count += 1
+        if(instructor.id == course.instructor_id):  # if they do match
+          count += 1                                # increment counter
+      # once checked all course id's, check to see if the count == 1
+      # if so, print the instructor's name
       if(count == 1):
         print(f"Instructor Name: {instructor.first_name} {instructor.last_name}")
-    # for instr in courses:
-    # if instructor id == course instructor id, count ++
-    #   print(instr)
+    
 
 
     return complete(request)
