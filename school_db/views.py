@@ -144,8 +144,12 @@ SELECT `school_db_instructor`.`id`,
 # Print the instructors name and courses that he belongs to in the terminal 
 # (Do not hard code his name in the print)
 def problem_three(request):
-
-
+    instr = Instructor.objects.all().get(id = 2)
+    crs = Course.objects.all().filter(instructor_id = 2)
+    print(f"Instructor Name: {instr.first_name} {instr.last_name}")
+    print("Courses:")
+    for course in crs:
+      print(f"\t- {course.name}")
 
     return complete(request)
 
@@ -192,8 +196,12 @@ SELECT `school_db_instructor`.`id`,
 
 # Get the count of students, courses, and instructors and print them in the terminal
 def problem_four(request):
-
-
+    student_count = Student.objects.count()
+    course_count = Course.objects.count()
+    instructor_count = Instructor.objects.count()
+    print(f"Students Count: {student_count}")
+    print(f"Courses Count: {course_count}")
+    print(f"Instructors Count: {instructor_count}")
 
     return complete(request)
 
@@ -238,8 +246,11 @@ SELECT COUNT(*) AS `__count`
 # Print the new student's id, full name, year, and gpa to the terminal
 # NOTE every time you execute this function a duplicate student will be created with a different primary key number
 def problem_five(request):
-
-
+    new_kid = Student.objects.create(first_name = "Travis", last_name = "Dula", year = 2006, gpa = 2.0)
+    print(f"ID: {new_kid.id}")
+    print(f"Full Name: {new_kid.first_name} {new_kid.last_name}")
+    print(f"Year: {new_kid.year}")
+    print(f"GPA: {new_kid.gpa}")
 
     return complete(request)
 
@@ -274,8 +285,12 @@ VALUES ('Kyle', 'Harwood', 2022, 3.0)
 def problem_six(request):
     
     # Make sure to set this equal to the primary key of the row you just created!
-    student_id = 11
-
+    student_id = 16
+    Student.objects.filter(id = student_id).update(gpa=3.5)
+    another_me = Student.objects.get(id = student_id)
+    print(f"Id: {another_me.id}")
+    print(f"Full Name: {another_me.first_name} {another_me.last_name}")
+    print(f"GPA: {another_me.gpa}")
 
 
     return complete(request)
@@ -323,8 +338,8 @@ LIMIT 21
 def problem_seven(request):
 
     # Make sure to set this equal to the primary key of the row you just created!
-    student_id = 11
-
+    student_id = 16
+    Student.objects.filter(id = student_id).delete()
 
     try:
         student = Student.objects.get(pk=student_id)
