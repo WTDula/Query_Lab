@@ -58,7 +58,10 @@ SELECT `school_db_student`.`id`,
 # Order the data by highest GPAs first (descending).
 # Print out each student's full name and gpa to the terminal
 def problem_one(request):
-
+    student_return = Student.objects.all()
+    student_gpa_gt_3 = student_return.filter(gpa__gt = 3.0).order_by("-gpa")
+    for student in student_gpa_gt_3:
+        print(f"Full Name: {student.first_name} {student.last_name} GPA: {student.gpa}")
 
 
     return complete(request)
